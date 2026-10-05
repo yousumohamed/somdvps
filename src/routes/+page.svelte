@@ -24,8 +24,9 @@
 	<main class="hero container">
 		<div class="copy">
 			<p class="eyebrow">
-				<span class="dot" aria-hidden="true"></span>
-				{site.tagline} · Coming soon
+				<span>{site.tagline}</span>
+				<span class="rule" aria-hidden="true"></span>
+				<span>{new Date().getFullYear()}</span>
 			</p>
 
 			<h1>
@@ -102,33 +103,22 @@
 		padding-block: 3vh;
 	}
 
+	/* Plain editorial line: label, hairline, year */
 	.eyebrow {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
-		gap: 10px;
-		height: 34px;
-		padding: 0 14px;
-		border: 1px solid var(--line);
-		border-radius: 999px;
+		gap: 16px;
+		max-width: 34rem;
 		font-size: 0.85rem;
 		font-weight: 500;
 		color: var(--ink-2);
+		font-variant-numeric: tabular-nums;
 		animation: rise 0.7s var(--ease) both;
 	}
-	.dot {
-		position: relative;
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-		background: var(--ink);
-	}
-	.dot::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		border-radius: 50%;
-		background: var(--ink);
-		animation: ping 1.8s var(--ease) infinite;
+	.rule {
+		flex: 1;
+		height: 1px;
+		background: var(--line-strong);
 	}
 
 	h1 {
@@ -281,21 +271,13 @@
 			transform: translateX(18px);
 		}
 	}
-	@keyframes ping {
-		75%,
-		100% {
-			transform: scale(2.4);
-			opacity: 0;
-		}
-	}
 	@keyframes marquee {
 		to {
 			transform: translateX(-50%);
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.track,
-		.dot::after {
+		.track {
 			animation: none;
 		}
 	}
