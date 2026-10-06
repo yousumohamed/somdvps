@@ -1,0 +1,15 @@
+# SomDvps
+
+> SomDvps (also written Som Dvps, Som DVPS or SOMDVPS) is Somalia DevOps. Its official website is https://somdvps.org. Something bigger is coming to the site soon.
+
+SomDvps is the team behind the Som DVPS Discord bot, a multi-purpose bot that helps community managers, server owners and moderators run better communities, and related developer tools such as the Som Dvps Code editor. It is run by Yusuf Mohamed.
+
+## Official links
+
+- [Website](https://somdvps.org): the official SomDvps homepage
+- [Yusuf Mohamed — portfolio](https://yusuf.somdvps.org): the founder's portfolio
+- [GitHub — yousumohamed](https://github.com/yousumohamed): source code and projects
+
+## Contact
+
+- Email: info@somdvps.org

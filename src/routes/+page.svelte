@@ -4,18 +4,91 @@
 	import Header from '#lib/components/Header.svelte';
 
 	const ticker = Array.from({ length: 6 }, () => 'Something bigger comes out');
+
+	// Structured data: tells Google (and AI answers built on it) what SomDvps is, who runs it
+	// and which profiles belong to it. WebSite.name is what Google shows as the site name.
+	const org = `${site.url}/#organization`;
+	const person = `${site.url}/#founder`;
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'WebSite',
+				'@id': `${site.url}/#website`,
+				url: site.url,
+				name: site.name,
+				alternateName: site.alternateNames,
+				description: site.description,
+				inLanguage: 'en',
+				publisher: { '@id': org }
+			},
+			{
+				'@type': 'Organization',
+				'@id': org,
+				name: site.name,
+				alternateName: site.alternateNames,
+				url: site.url,
+				logo: { '@type': 'ImageObject', url: `${site.url}/icon-512.png`, width: 512, height: 512 },
+				image: site.ogImage,
+				description: site.description,
+				email: site.email,
+				contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: site.email },
+				founder: { '@id': person },
+				sameAs: site.sameAs
+			},
+			{
+				'@type': 'Person',
+				'@id': person,
+				name: site.founderFullName,
+				alternateName: site.founder,
+				url: site.portfolio,
+				image: `${site.url}/yusuf.png`,
+				worksFor: { '@id': org }
+			},
+			{
+				'@type': 'WebPage',
+				'@id': `${site.url}/#webpage`,
+				url: site.url,
+				name: site.title,
+				description: site.description,
+				isPartOf: { '@id': `${site.url}/#website` },
+				about: { '@id': org },
+				primaryImageOfPage: { '@type': 'ImageObject', url: site.ogImage, width: 1200, height: 630 },
+				inLanguage: 'en'
+			}
+		]
+	};
+	// Every value above is a constant from site.ts, so nothing here can close the script tag early.
+	const ldScript = `<script type="application/ld+json">${JSON.stringify(jsonLd)}</${'script'}>`;
 </script>
 
 <svelte:head>
 	<title>{site.title}</title>
 	<meta name="description" content={site.description} />
-	<link rel="canonical" href={site.url} />
+	<meta name="keywords" content={site.keywords.join(', ')} />
+	<meta name="author" content={site.founderFullName} />
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+	<link rel="canonical" href="{site.url}/" />
+	<meta name="application-name" content={site.name} />
+	<meta name="apple-mobile-web-app-title" content={site.name} />
+
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content={site.url} />
+	<meta property="og:site_name" content={site.name} />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:url" content="{site.url}/" />
 	<meta property="og:title" content={site.title} />
 	<meta property="og:description" content={site.description} />
-	<meta property="og:image" content="{site.url}/yusuf.png" />
+	<meta property="og:image" content={site.ogImage} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="SomDvps — Something bigger is coming" />
+
 	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={site.title} />
+	<meta name="twitter:description" content={site.description} />
+	<meta name="twitter:image" content={site.ogImage} />
+
+	{@html ldScript}
 </svelte:head>
 
 <div class="screen">
@@ -24,7 +97,7 @@
 	<main class="hero container">
 		<div class="copy">
 			<p class="eyebrow">
-				<span>{site.tagline}</span>
+				<span><strong>{site.name}</strong> · {site.tagline}</span>
 				<span class="rule" aria-hidden="true"></span>
 				<span>{new Date().getFullYear()}</span>
 			</p>
@@ -35,8 +108,8 @@
 			</h1>
 
 			<p class="lede">
-				We're building something new at <strong>somdvps.org</strong>. It isn't ready yet, but it's close. Until it
-				lands, this is where to find us.
+				<strong>SomDvps</strong> is Somalia DevOps — the team behind the Som DVPS Discord bot and the tools around
+				it. Something new lands at somdvps.org soon. Until then, this is where to find us.
 			</p>
 
 			<div class="actions">
@@ -64,7 +137,7 @@
 
 		<figure class="portrait">
 			<span class="word" aria-hidden="true">{site.name}</span>
-			<img src="/yusuf.png" alt="{site.founder}, seated in a black suit, black-and-white portrait" width="450" height="554" />
+			<img src="/yusuf.png" alt="{site.founderFullName} of SomDvps, seated in a black suit" width="450" height="554" />
 		</figure>
 	</main>
 
@@ -119,6 +192,10 @@
 		flex: 1;
 		height: 1px;
 		background: var(--line-strong);
+	}
+	.eyebrow strong {
+		font-weight: 600;
+		color: var(--ink);
 	}
 
 	h1 {
