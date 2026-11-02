@@ -1,6 +1,8 @@
 # somdvps.org
 
 Coming-soon landing page for SomDvps: "Something bigger is coming." SvelteKit 3 + Svelte 5, set in DM Sans, in the same black-and-white style as the content-website CMS.
+    <img src="static/SomDvps%20Laptop%20Website%20Mockup.png" alt="SomDvps website mockup displayed on a laptop">
+
 
 ```bash
 npm install
